@@ -1,0 +1,11 @@
+Le but des pare-feu.
+Un pare-feu1,2 (de l'anglais firewall3) est un logiciel et/ou un matériel permettant de faire respecter la politique de sécurité du réseau, celle-ci définissant quels sont les types de communications autorisés sur ce réseau informatique. Il surveille et contrôle les applications et les flux de données (paquets).
+Le certificat SSL sert à chiffrer le trafic entre les serveurs Web et le réseau externe afin d'empêcher les attaques de l'homme du milieu (MITM) et les renifleurs de réseau de détecter le trafic, ce qui pourrait exposer des informations précieuses. Les certificats SSL garantissent la confidentialité, l'intégrité et l'identification.
+HTTPS est HTTP avec le chiffrement TLS. HTTPS utilise TLS (SSL) pour chiffrer les requêtes et réponses HTTP normales, ce qui le rend plus sûr et plus sécurisé. Un site Web qui utilise HTTPS a https:// au début de son URL.
+Le but de la surveillance des clients.
+Les clients de surveillance servent à surveiller les serveurs et le réseau externe. Ils analysent les performances et les opérations des serveurs, mesurent l'état de santé global et alertent les administrateurs si les serveurs ne fonctionnent pas comme prévu. L'outil de surveillance observe les serveurs et fournit aux administrateurs des mesures clés sur les opérations des serveurs. Il teste automatiquement l'accessibilité des serveurs, mesure le temps de réponse et alerte en cas d'erreurs telles que des fichiers corrompus/manquants, des vulnérabilités/violations de sécurité et de nombreux autres problèmes.
+Problèmes avec cette infrastructure
+La terminaison de SSL au niveau de l'équilibreur de charge laisserait le trafic entre l'équilibreur de charge et les serveurs Web non chiffré.
+Avoir un serveur MySQL est un problème car il n'est pas évolutif et peut servir de point de défaillance unique pour l'infrastructure Web.
+Avoir des serveurs avec tous les mêmes composants obligerait les composants à se disputer les ressources du serveur telles que le processeur, la mémoire, les E/S, etc., ce qui peut entraîner de mauvaises performances et rendre également difficile la localisation de la source du problème. Une configuration comme celle-ci n’est pas facilement évolutive..
+
