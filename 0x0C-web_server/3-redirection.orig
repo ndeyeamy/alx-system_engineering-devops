@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+
+=======
 #!/usr/bin/env bash
 #  A Script that configures a new Ubuntu machine to Perform a 301-redirection
 
@@ -14,3 +17,4 @@ sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled
 
 # Restarting Nginx service
 sudo service nginx restart
+>>>>>>> 0ff6bc17ad1402aecf5f321295a0db75c24f384b
