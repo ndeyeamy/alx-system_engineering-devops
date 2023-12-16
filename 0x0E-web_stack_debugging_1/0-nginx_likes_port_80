@@ -1,28 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Configures an Nginx server to listen on port 80.
 
-# Installer Nginx si ce n'est pas déjà fait
-if ! [ -x "$(command -v nginx)" ]; then
-    sudo apt update
-    sudo apt install nginx
-fi
-
-# Vérifier et modifier la configuration de Nginx
-nginx_config="/etc/nginx/sites-available/default"
-if grep -q "listen 80;" "$nginx_config"; then
-    echo "Nginx est déjà configuré pour écouter sur le port 80."
-else
-    sudo sed -i 's/^\(\s*listen\s*\).*/\1 80;/g' "$nginx_config"
-    echo "Configuration de Nginx mise à jour pour écouter sur le port 80."
-fi
-
-# Vérifier s'il y a d'autres services utilisant le port 80
-processus_port_80=$(sudo netstat -tuln | grep ':80')
-if [ -z "$processus_port_80" ]; then
-    echo "Aucun autre service n'utilise le port 80."
-else
-    echo "Processus utilisant le port 80 :"
-    echo "$processus_port_80"
-fi
-
-# Redémarrer Nginx pour appliquer les changements
-sudo systemctl restart nginx
+rm /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+service nginx restart
