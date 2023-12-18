@@ -1,5 +1,22 @@
-# Install Nginx web server (w/ Puppet)
-exec { 'server configuration':
-  provider => shell,
-  command  => 'sudo apt-get -y update; sudo apt-get -y install nginx; echo "Hello World!" > /var/www/html/index.html; sudo sed -i "/server_name _;/a location /redirect_me {\\n\\treturn 301 https://google.com; listen 80; \\n\\t}\\n" /etc/nginx/sites-available/default; sudo service nginx restart'
+# Install and configure nginx
+package { 'jfryman-nginx':
+  ensure => installed,
+}
+
+include nginx
+
+class { 'nginx':
+  manage_repo    => true,
+  package_source => 'nginx-stable',
+}
+
+nginx::resource::server { '18.214.87.225':
+  listen_port      => 80,
+  www_root         => '/var/www/html/',
+  vhost_cfg_append => { 'rewrite' => '^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent' },
+}
+
+file { 'index':
+  path    => '/var/www/html/index.nginx-debian.html',
+  content => 'Holberton School for the win!',
 }
