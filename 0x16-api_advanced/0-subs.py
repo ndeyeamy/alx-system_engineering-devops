@@ -1,31 +1,36 @@
 #!/usr/bin/python3
-"""Query Reddit API to determine subreddit sub count
-"""
 
 import requests
 
-
 def number_of_subscribers(subreddit):
-    """Request number of subscribers of subreddit
-    from Reddit API
-    """
-    # set custom user-agent
-    user_agent = '0x16-api_advanced-jmajetich'
-    url = 'https://www.reddit.com/r/{}.json'.format(subreddit)
+    # Reddit API endpoint for getting subreddit information
+    url = f'https://www.reddit.com/r/{subreddit}/about.json'
 
-    # custom user-agent avoids request limit
-    headers = {'User-Agent': user_agent}
+    # Set a custom User-Agent to avoid Too Many Requests errors
+    headers = {'User-Agent': 'CustomUserAgent'}
 
-    r = requests.get(url, headers=headers, allow_redirects=False)
+    try:
+        # Make a GET request to the Reddit API
+        response = requests.get(url, headers=headers)
 
-    if r.status_code != 200:
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            # Parse the JSON response
+            data = response.json()
+
+            # Extract and return the number of subscribers
+            return data['data']['subscribers']
+
+        # Check if the subreddit is invalid (status code 404)
+        elif response.status_code == 404:
+            print(f"The subreddit '{subreddit}' is not valid.")
+            return 0
+
+        # Handle other errors
+        else:
+            print(f"Error: {response.status_code}")
+            return 0
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
         return 0
-
-    # load response unit from json
-    data = r.json()['data']
-    # extract list of pages
-    pages = data['children']
-    # extract data from first page
-    page_data = pages[0]['data']
-    # return number of subreddit subs
-    return page_data['subreddit_subscribers']
