@@ -1,4 +1,5 @@
 global
+    tune.ssl.default-dh-param 2048
     log 127.0.0.1 local0 notice
     maxconn 2000
     user haproxy
@@ -26,17 +27,13 @@ listen hbnb
     server 229545-web-01 18.214.87.225:80 check
     server 229545-web-02 52.23.245.83:80 check
 
-frontend ndeyeamy.tech
-        bind *:443 ssl crt /etc/letsencrypt/live/www.ndeyeamy.tech/www.ndeyeamy.tech.pem
-        mode http
-        option http-server-close
-        reqadd X-Forwarded-Proto:\ https
+frontend ndeyeamy-tech-frontend
+    bind *:80
+    bind *:443 ssl crt /etc/letsencrypt/live/www.ndeyeamy.tech/ndeyeamy.pem
+    mode http
+    default_backend ndeyeamy-tech-backend
 
-        acl is_root path -i /
-        option forwardfor
-        default_backend ndeyeamy.tech_backend
-
-backend ndeyeamy.tech_backend
-        balance roundrobin
-        server 229545-web-01 18.214.87.225:80 check
-        server 229545-web-02 52.23.245.83:80 check
+backend ndeyeamy-tech-backend
+    balance roundrobin
+    server 229545-web-01 52.3.242.38:80 check
+    server 229545-web-02 3.84.255.5:80 check
